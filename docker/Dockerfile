@@ -1,15 +1,19 @@
-FROM unocha/php7-k8s:7.3.18-r0-202005-01 as builder
+FROM public.ecr.aws/unocha/php-k8s:8.2-stable as builder
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 COPY . /srv/www
 WORKDIR /srv/www
-RUN rm -rf ./vendor && \
+RUN apk add -U --no-cache patch && \
+    rm -rf ./vendor && \
+    composer self-update && \
     composer install --no-dev && \
     mkdir -p -m 0755 html/sites/default && \
     cp -a docker/settings.php docker/services.yml html/sites/default
 
-FROM unocha/php7-k8s:7.3.18-r0-202005-01
+FROM public.ecr.aws/unocha/php-k8s:8.2-stable
+
+RUN apk add -U --no-cache php82-pecl-uploadprogress
 
 ARG VCS_REF
 ARG VCS_URL
@@ -36,4 +40,3 @@ COPY --from=builder /srv/www/vendor /srv/www/vendor/
 COPY --from=builder /srv/www/composer.json /srv/www/composer.json
 COPY --from=builder /srv/www/composer.patches.json /srv/www/composer.patches.json
 COPY --from=builder /srv/www/composer.lock /srv/www/composer.lock
-COPY --from=builder /srv/www/docker/fastcgi_drupal.conf /etc/nginx/apps/drupal/fastcgi_drupal.conf

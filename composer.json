@@ -20,17 +20,19 @@
         }
     ],
     "require": {
-        "php": ">=7.2",
-        "composer/installers": "^1.2",
-        "cweagans/composer-patches": "^1.6.5",
-        "drupal-composer/drupal-scaffold": "^2.5",
-        "drupal/core": "8.9.3",
+        "php": ">=7.3",
+        "composer/installers": "^1.10",
+        "cweagans/composer-patches": "^1.7",
+        "drupal/core": "^9.3",
+        "drupal/core-composer-scaffold": "^9.3",
+        "drupal/core-recommended": "^9.3",
         "drupal/ctools": "^3.2",
         "drupal/pathauto": "^1.8",
         "drupal/pwa": "^1.4",
         "drupal/token": "^1.7",
-        "drush/drush": "^10.0.0",
-        "oomphinc/composer-installers-extender": "^1.1"
+        "drush/drush": "^10.5",
+        "oomphinc/composer-installers-extender": "^2.0",
+        "symfony/flex": "^1.10"
     },
     "require-dev": {
         "drupal/coder": "^8.3",
@@ -44,7 +46,24 @@
     "prefer-stable": true,
     "config": {
     "bin-dir": "vendor/bin/",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "cweagans/composer-patches": true,
+            "drupal/core-composer-scaffold": true,
+            "oomphinc/composer-installers-extender": true,
+            "symfony/flex": true
+        }
+    },
+    "scripts": {
+        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
+        "post-install-cmd": [
+            "@drupal-scaffold"
+        ],
+        "post-update-cmd": [
+            "@drupal-scaffold"
+        ]
     },
     "scripts": {
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
@@ -75,12 +94,29 @@
             "drush/Commands/{$name}": ["type:drupal-drush"]
         },
         "drupal-scaffold": {
-            "initial": {
-                "sites/default/default.services.yml": "sites/default/services.yml",
-                "sites/default/default.settings.php": "sites/default/settings.php",
-                ".editorconfig": "../.editorconfig",
-                ".gitattributes": "../.gitattributes"
+            "file-mapping": {
+                "[web-root]/sites/default/services.yml": {
+                    "mode": "replace",
+                    "path": "html/core/assets/scaffold/files/default.services.yml",
+                    "overwrite": false
+                },
+                "[web-root]/sites/default/settings.php": {
+                    "mode": "replace",
+                    "path": "html/core/assets/scaffold/files/default.settings.php",
+                    "overwrite": false
+                }
+            },
+            "locations": {
+                "web-root": "html/"
             }
+        },
+        "merge-plugin": {
+            "include": [
+                "html/core/composer.json"
+            ],
+            "recurse": true,
+            "replace": false,
+            "merge-extra": false
         }
     }
 }
