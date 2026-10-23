@@ -28,9 +28,7 @@
         "drupal/core-recommended": "^9.3",
         "drupal/ctools": "^3.2",
         "drupal/pathauto": "^1.8",
-        "drupal/pwa": "^1.4",
         "drupal/token": "^1.7",
-        "drush/drush": "^10.5",
         "oomphinc/composer-installers-extender": "^2.0",
         "symfony/flex": "^1.10"
     },
@@ -54,6 +52,11 @@
             "drupal/core-composer-scaffold": true,
             "oomphinc/composer-installers-extender": true,
             "symfony/flex": true
+        },
+        "policy": {
+            "advisories": {
+                "block": false
+            }
         }
     },
     "scripts": {
