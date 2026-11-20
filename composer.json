@@ -34,6 +34,7 @@
         "drupal/quickedit": "^2.0",
         "drupal/rdf": "^2.1",
         "drupal/token": "^1.17",
+        "drupal/upgrade_status": "^5.0",
         "drush/drush": "^13.8",
         "oomphinc/composer-installers-extender": "^2.0",
         "symfony/flex": "^2.11"
