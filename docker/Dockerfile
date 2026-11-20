@@ -1,4 +1,4 @@
-FROM public.ecr.aws/unocha/php-k8s:8.4-stable as builder
+FROM public.ecr.aws/unocha/php-k8s:8.4-stable AS builder
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
