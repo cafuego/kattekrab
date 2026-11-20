@@ -1,4 +1,4 @@
-FROM public.ecr.aws/unocha/php-k8s:8.2-stable as builder
+FROM public.ecr.aws/unocha/php-k8s:8.4-stable AS builder
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
@@ -11,9 +11,7 @@ RUN apk add -U --no-cache patch && \
     mkdir -p -m 0755 html/sites/default && \
     cp -a docker/settings.php docker/services.yml html/sites/default
 
-FROM public.ecr.aws/unocha/php-k8s:8.2-stable
-
-RUN apk add -U --no-cache php82-pecl-uploadprogress
+FROM public.ecr.aws/unocha/php-k8s:8.4-stable
 
 ARG VCS_REF
 ARG VCS_URL
